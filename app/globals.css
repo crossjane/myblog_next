@@ -1,26 +1,242 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Josefin+Slab:ital,wght@0,100..700;1,100..700&display=swap");
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  padding-top: 1rem;
+  text-align: center;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* 초기화 코드 */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1;
+  /* font-family: "Noto Sans KR", sans-serif; */
+  color: rgb(74, 74, 74);
+}
+ol,
+ul {
+  /* list-style: none; */
+  padding: 0;
+}
+
+li {
+  /* list-style-type: none; */
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* 내부코드 */
+.contents-container {
+  display: flex;
+  align-items: center;
+}
+
+.contents-list {
+  border: solid 1px rgb(235, 235, 235);
+  border-radius: 5px;
+  padding: 8px;
+  margin-right: 10px;
+  width: 300px;
+  display: flex;
+  justify-content: left;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+}
+
+.btn {
+  border-color: rgb(216, 216, 216);
+  border-radius: 5px;
+  padding: 8px 13px 8px 13px;
+  margin: 5px;
+  font-size: 12.5px;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+}
+
+.edit-input {
+  border: solid 1px rgb(216, 216, 216);
+  border-radius: 5px;
+  padding: 8px;
+  margin-right: 10px;
+  width: 300px;
+  display: flex;
+  justify-content: left;
+}
+
+.save-input-container {
+  display: flex;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.save-input {
+  border: solid 1px rgb(216, 216, 216);
+  border-radius: 5px;
+  padding: 8px;
+  margin-right: 10px;
+  width: 362px;
+  display: flex;
+  justify-content: left;
+}
+
+/* 초기화 코드드 */
+body {
+  line-height: 1;
+  font-family: "Noto Sans KR", sans-serif;
+  color: rgb(74, 74, 74);
+}
+ol,
+ul {
+  list-style: none;
+  padding: 0;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* 내부 css */
+
+.App {
+  display: flex;
+  justify-content: center;
+  margin-top: 200px;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.board-table {
+  background-color: rgb(242, 242, 242);
+  border-radius: 20px;
+  box-shadow: 4px 4px 10px rgba(84, 84, 84, 0.2);
+  width: 600px;
+}
+
+header p {
+  margin-right: auto;
+}
+
+.board-table tr {
+  padding: 10px;
+}
+
+.btns {
+  display: flex;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.btns button {
+  height: 30px;
+}
+
+.board-detail {
+  display: flex;
+  flex-direction: column;
+  width: 800px;
+  height: auto;
+  background-color: rgb(247, 247, 247);
+  border-radius: 15px;
+  border-color: gray;
+  box-shadow: 0 0 10px rgba(82, 82, 82, 0.3);
+}
+
+.board-title {
+  padding: 30px 30px 0px 30px;
+}
+
+.board-title-line {
+  border-bottom: 1px solid rgb(200, 200, 200);
+  padding-bottom: 20px;
+}
+
+.board-contents {
+  padding: 15px 30px 30px 30px;
+}
+
+.comment {
+  padding: 20px 30px 20px 30px;
+  background-color: rgb(236, 236, 236);
+  border-radius: 10px;
+  border: 1px solid rgb(216, 216, 216);
+  width: 680px;
+  align-self: center;
+}
+
+.comment-input button {
+  margin-left: 10px;
+  width: 70px;
+  height: 30px;
+}
+
+.btns {
+  padding: 30px;
+}
+
+.comment-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.comment-input input {
+  width: 600px;
+  height: 30px;
+  border-radius: 5px;
+  border: solid 1px rgb(210, 210, 210);
+}
+
+.comment-info {
+  display: flex;
+  align-items: center;
+}
+
+.tabmenu-focused {
+  font-weight: 600;
+  margin: 15px;
+}
+
+.tabmenu {
+  font-weight: 200;
+  margin: 15px;
+}
+
+.tab-container {
+  display: flex;
 }

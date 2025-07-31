@@ -3,6 +3,7 @@ import { collection, query, getDocs } from "firebase/firestore";
 import React from "react";
 import GetBoards from "./components/getBoards";
 
+
 export default async function Home() {
   // useEffect는 컴포넌트에서 빈 html만 들고오기 때문에 임의로 해줘야 하는것인가 ?
   // 그럼 useClient 에서는 useEffect를 안하면 실행이 안되고 ,ssr은 저절로 되는차이?
@@ -31,15 +32,18 @@ export default async function Home() {
   querySnapshotData.forEach((doc) => {
     const id = doc.id;
     const data = doc.data();
-    getBoards.push({ id, ...data });
+    getBoards.push({
+      id,
+      ...data,
+      createdAt: data.createdAt?.toDate()?.toISOString() ?? null,
+    });
   });
 
   console.log("보드 ", getBoards);
 
   return (
     <>
-      <GetCategories getCategories={getCategories} />
-      <GetBoards getBoards={getBoards} />
+      <GetBoards getBoards={getBoards} getCategories={getCategories} />
     </>
   );
 }
