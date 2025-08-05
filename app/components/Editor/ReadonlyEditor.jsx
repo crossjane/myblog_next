@@ -1,5 +1,6 @@
+"use client";
 import React from "react";
-import { EditorContent, useEditor } from "@tiptap/react";
+import { EditorContent, useEditor, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Typography from "@tiptap/extension-typography";
 import Highlight from "@tiptap/extension-highlight";
@@ -9,6 +10,12 @@ function ReadonlyEditor({ content }) {
     extensions: [StarterKit, Highlight, Typography],
     content,
     editable: false,
+    editorProps: { //여기서부터 추가 . 이게모임??
+      attributes: {
+        class: "prose",
+      },
+    },
+    immediatelyRender: false,
   });
   if (!editor) {
     return null;
