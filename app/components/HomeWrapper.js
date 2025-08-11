@@ -2,7 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import BoardItem from "./BoardItem";
+import BoardItem from "./Boards/BoardItem";
 
 export default function HomeWrapper({ getCategories, getBoards }) {
   const router = useRouter();

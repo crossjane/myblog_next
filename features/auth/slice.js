@@ -8,7 +8,7 @@ const initialState = {
 // 상태 바꿀때 쓸 함수들. state는 initialState, action은 dispatch로 전달된 객체.
 // 프론트에서 dispatch로 액션 날림 -> state변경하기.
 const reducers = {
-  setMe: (state, action) => {
+  updateMe: (state, action) => {
     state.me = action.payload;
   },
 };

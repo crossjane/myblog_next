@@ -2,13 +2,13 @@
 
 import React from "react";
 
-function EditBtn() {
+function DeleteBoard() {
   return (
     <>
       <button className="hover:font-medium cursor-pointer">
-        <img src="/edit.svg" className="h-6" />
+        <img src="/delete.svg" className="h-5" />
       </button>
     </>
   );
 }
-export default EditBtn;
+export default DeleteBoard;

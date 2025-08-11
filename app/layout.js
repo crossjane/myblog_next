@@ -1,6 +1,7 @@
 import { StoreProvider } from "@/store/storeProvider";
 import "./globals.css";
-import Header from "./components/header";
+import Header from "./components/Header";
+import "prosemirror-view/style/prosemirror.css";
 
 export async function generateMetadata() {
   return {

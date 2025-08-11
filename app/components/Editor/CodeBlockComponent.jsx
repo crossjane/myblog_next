@@ -1,4 +1,4 @@
-import "./CodeBlockComponent.jsx";
+"use client";
 
 import { NodeViewContent, NodeViewWrapper } from "@tiptap/react";
 import React from "react";
