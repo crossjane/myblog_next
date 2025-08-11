@@ -28,9 +28,6 @@ function EditBoard({
 
   const boardId = board.id;
 
-
-  
-
   return (
     <>
       <div className="flex flex-col bg-[#f6f6f6] shadow-xl rounded-2xl p-10 m-25">

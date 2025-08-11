@@ -63,7 +63,25 @@ export default async function BoardDetail({ params }) {
     comments.push(formatComment);
   });
 
-  console.log("댓글!!!", comments);
+  for (const comment of comments) {
+    const uid = comment.uid;
+    const userRef = doc(db, "users", uid);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      const id = userSnap.id;
+      const data = userSnap.data();
+
+      const formatUser = {
+        id,
+        ...data,
+      };
+
+      comment.user = formatUser;
+    }
+  }
+
+  console.log(comments);
   return board ? (
     <BoardWrapper boardData={board} commentData={comments} />
   ) : (

@@ -4,6 +4,9 @@ import React, { useState } from "react";
 import ReadonlyEditor from "../Editor/ReadonlyEditor";
 import { useRouter } from "next/navigation";
 import { Editor } from "../Editor";
+import Image from "next/image";
+import { useSelector } from "react-redux";
+import { authSelector } from "@/features/auth/slice";
 
 function Readonly({
   board,
@@ -28,7 +31,7 @@ function Readonly({
   const [comments, setComments] = useState(commentData);
 
   const [tempComment, setTempComment] = useState("");
-
+  const { me } = useSelector(authSelector.getMe);
   // 댓글 관리
 
   async function saveComment() {
@@ -60,7 +63,7 @@ function Readonly({
         ...newComment,
         isEdit: false,
         tempComment: "",
-        uid: user.uid,
+        uid: me.uid,
         user: user,
       };
 
@@ -189,6 +192,7 @@ function Readonly({
     }
   }
 
+  console.log("댓글정보!!", comments);
   return (
     <>
       <div className="flex flex-col bg-[#f6f6f6] shadow-xl rounded-2xl p-10 m-25">
@@ -338,26 +342,35 @@ function Readonly({
                           </div>
                           <div className="flex justify-end gap-2 cursor-pointer">
                             {/* user는 객체.  */}
-                            {comment.user && user?.uid === comment.user.uid ? (
+                            {comment.user && me?.uid === comment.user.uid ? (
                               <>
-                                <img
+                                <Image
                                   src="/edit.svg"
                                   className="w-5"
+                                  width={50}
+                                  height={50}
+                                  alt={"댓글수정"}
                                   onClick={() => editComment(comment.id)}
-                                ></img>
-                                <img
+                                />
+                                <Image
                                   src="/delete.svg"
                                   className="w-3.5"
+                                  width={100}
+                                  height={100}
+                                  alt={"댓글삭제"}
                                   onClick={() => deleteComment(comment.id)}
-                                ></img>
+                                />
                               </>
                             ) : null}
-                            <img
+                            <Image
                               src={
                                 comment.likeId
                                   ? "/full_heart.svg"
                                   : "/empty_heart.svg"
                               }
+                              width={100}
+                              height={100}
+                              alt={"하트"}
                               onClick={() => commentLike(comment.id)}
                               className="w-5"
                             />
@@ -374,7 +387,7 @@ function Readonly({
         {/* 댓글 입력 */}
 
         <div className="flex flex-row itmes-center w-full mt-5">
-          {/* {user && <span>{user.name}</span>} */}
+          {me && <span>{me.name}</span>}
 
           <input
             className="flex-1 bg-white border-gray-300 border-1 focus:px-2 rounded-md h-8 mr-3 focus:outline-none"

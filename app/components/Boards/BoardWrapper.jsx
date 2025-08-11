@@ -17,19 +17,14 @@ import {
 } from "firebase/firestore";
 import db from "@/firebase";
 
-export default function BoardWrapper({
-  boardData,
-  commentData,
-  boardId,
-  categoryId,
-}) {
+export default function BoardWrapper({ boardData, commentData }) {
   const [detailIsEdit, setDetailIsEdit] = useState(false);
 
   const [comments, setComments] = useState(commentData);
   const [tempDetailText, setTempDetailText] = useState("");
   const [tempDetailHtml, setTempDetailHtml] = useState("");
   const [tempTitle, setTempTitle] = useState("");
-  // const { categoryId, boardId } = useParams();
+  const { categoryId, boardId } = useParams();
   const { me } = useSelector(authSelector.getMe);
   const [board, setBoard] = useState(boardData);
 
