@@ -102,10 +102,10 @@ function Header() {
           src="/line_keyboard.png"
           alt="메인 헤더 키보드 이미지"
           width={320}
-          height={100}
+          height={200}
           priority
           className="cursor-pointer"
-          style={{ width: 320, height: 100 }}
+          style={{ width: 320, height: 200 }}
         />
       </div>
     </>

@@ -7,6 +7,15 @@ import { Editor } from "../Editor";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import { authSelector } from "@/features/auth/slice";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
+import db from "@/firebase";
+import EditComment from "../comments/EditComment";
 
 function Readonly({
   board,
@@ -18,7 +27,6 @@ function Readonly({
   detailDelete,
   like,
   detailEdit,
-  bookmark,
   tempDetailHtml,
   setTempDetailText,
   setTempDetailHtml,
@@ -32,6 +40,7 @@ function Readonly({
 
   const [tempComment, setTempComment] = useState("");
   const { me } = useSelector(authSelector.getMe);
+
   // 댓글 관리
 
   async function saveComment() {
@@ -64,7 +73,10 @@ function Readonly({
         isEdit: false,
         tempComment: "",
         uid: me.uid,
-        user: user,
+        user: {
+          id: user.uid,
+          ...user,
+        },
       };
 
       setTempComment("");
@@ -109,7 +121,8 @@ function Readonly({
 
   async function editSaveComment(commentId) {
     try {
-      const comment = comments.find((comment) => comment.id === commentId);
+      const copyComments = [...comments];
+      const comment = copyComments.find((comment) => comment.id === commentId);
 
       if (comment.tempComment.trim().length === 0) {
         alert("댓글 내용을 작성해주세요.");
@@ -128,12 +141,17 @@ function Readonly({
       await updateDoc(docRef, {
         content: comment.tempComment,
       });
+
+      comment.content = comment.tempComment;
+      comment.isEdit = false;
+
+      setComments(copyComments);
     } catch (error) {
       console.log("error", error);
       alert("댓글을 수정할 수 없습니다.");
     }
 
-    loadComment();
+    // loadComment();
     setTempComment("");
   }
 
@@ -192,7 +210,6 @@ function Readonly({
     }
   }
 
-  console.log("댓글정보!!", comments);
   return (
     <>
       <div className="flex flex-col bg-[#f6f6f6] shadow-xl rounded-2xl p-10 m-25">
@@ -228,15 +245,6 @@ function Readonly({
                   src={board.likeId ? "/full_heart.svg" : "/empty_heart.svg"}
                   onClick={like}
                   className="w-5 cursor-pointer"
-                />
-                <img
-                  src={
-                    board.bookmarkId
-                      ? "/bookmark_full.svg"
-                      : "/bookmark_empty.svg"
-                  }
-                  onClick={bookmark}
-                  className="w-5 h-5 cursor-pointer"
                 />
               </div>
             </div>
@@ -306,16 +314,15 @@ function Readonly({
             {comments &&
               comments.map((comment, index) =>
                 comment.isEdit ? (
-                  <div key={comment.id}>
-                    <input
-                      type="text"
-                      value={comment.tempComment}
-                      onChange={(e) => changeEditComment(e, index)}
-                    />
-                    <button onClick={() => editSaveComment(comment.id)}>
-                      저장
-                    </button>
-                  </div>
+                  <EditComment
+                    key={comment.id}
+                    id={comment.id}
+                    name={comment.user?.name}
+                    tempComment={comment.tempComment}
+                    changeEditComment={changeEditComment}
+                    editSaveComment={editSaveComment}
+                    index={index}
+                  />
                 ) : (
                   <div key={comment.id}>
                     <div className="px-4 py-2 flex flex-col min-h-8 rounded-md ">
@@ -336,19 +343,18 @@ function Readonly({
                         </div>
                         <div className="flex flex-row items-center">
                           <div className="flex flex-1">
-                            <p className="text-[13px] pt-3 break-all">
+                            <p className="text-[13px] pt-3 break-all leading-normal">
                               {comment.content}
                             </p>
                           </div>
                           <div className="flex justify-end gap-2 cursor-pointer">
-                            {/* user는 객체.  */}
-                            {comment.user && me?.uid === comment.user.uid ? (
+                            {comment.user && me?.uid === comment.user.id ? (
                               <>
                                 <Image
                                   src="/edit.svg"
-                                  className="w-5"
-                                  width={50}
-                                  height={50}
+                                  className="w-5 ml-2"
+                                  width={100}
+                                  height={100}
                                   alt={"댓글수정"}
                                   onClick={() => editComment(comment.id)}
                                 />

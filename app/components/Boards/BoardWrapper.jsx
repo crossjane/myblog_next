@@ -7,7 +7,9 @@ import { useSelector } from "react-redux";
 import { authSelector } from "@/features/auth/slice";
 import EditBoard from "./EditBoard";
 import {
+  addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -125,7 +127,7 @@ export default function BoardWrapper({ boardData, commentData }) {
         );
 
         const newLike = {
-          uid: user.uid,
+          uid: me.uid,
         };
 
         const docRef = await addDoc(likeRef, newLike);
@@ -143,52 +145,6 @@ export default function BoardWrapper({ boardData, commentData }) {
     }
   }
 
-  async function bookmark() {
-    try {
-      //클릭 시, addDoc 으로 firebase에 들어가야함.
-      //이때, bookmark id로 관리 되어야 함
-      // 그리고 북마크 이미지 전환.
-      //북마크 id를 생성, -> board에 넣음 (formatedData-> setBoard)
-      if (!board.bookmarkId) {
-        const bookmarkRef = collection(
-          db,
-          "category",
-          categoryId,
-          "board",
-          boardId,
-          "bookmark"
-        );
-
-        // 어느 유저가가 북마크 했는지 식별위함
-        // 현재 로그인한 유저의 uid
-        const newLike = {
-          uid: user.uid,
-        };
-
-        const docRef = await addDoc(bookmarkRef, newLike);
-        //  북마크한 고유id를 board에 저장.
-        setBoard({ ...board, bookmarkId: docRef.id });
-        return;
-      }
-
-      await deleteDoc(
-        doc(
-          db,
-          "category",
-          categoryId,
-          "board",
-          boardId,
-          "bookmark",
-          board.bookmarkId
-        )
-      );
-      setBoard({ ...board, bookmarkId: "" });
-    } catch (error) {
-      console.log("bookmark error", error);
-      alert("북마크를 할 수 없습니다.");
-    }
-  }
-
   return (
     <>
       {detailIsEdit ? (
@@ -202,7 +158,6 @@ export default function BoardWrapper({ boardData, commentData }) {
           detailDelete={detailDelete}
           like={like}
           detailEdit={detailEdit}
-          bookmark={bookmark}
           tempDetailHtml={tempDetailHtml}
           setTempDetailText={setTempDetailText}
           setTempDetailHtml={setTempDetailHtml}
@@ -221,7 +176,6 @@ export default function BoardWrapper({ boardData, commentData }) {
           detailDelete={detailDelete}
           like={like}
           detailEdit={detailEdit}
-          bookmark={bookmark}
           tempDetailHtml={tempDetailHtml}
           setTempDetailText={setTempDetailText}
           setTempDetailHtml={setTempDetailHtml}

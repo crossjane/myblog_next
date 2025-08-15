@@ -10,6 +10,7 @@ import {
 import React from "react";
 import BoardWrapper from "../../../components/Boards/BoardWrapper";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
+import moment from "moment";
 
 export default async function BoardDetail({ params }) {
   const { boardId, categoryId } = await params;
@@ -25,9 +26,12 @@ export default async function BoardDetail({ params }) {
     const formatBoard = {
       id,
       ...data,
-      createdAt: data.createdAt?.toDate?.().toISOString() || null,
+      createdAt: data.createdAt
+        ? moment(data.createdAt.toDate()).format("YYYY년 MM월 DD일 HH:mm:ss")
+        : null,
     };
 
+    console.log("날짜", formatBoard.createdAt);
     const userRef = doc(db, "users", formatBoard.uid);
     const userSnap = await getDoc(userRef);
 
@@ -53,7 +57,9 @@ export default async function BoardDetail({ params }) {
     const formatComment = {
       id,
       ...data,
-      createdAt: data.createdAt?.toDate?.().toISOString() || null,
+      createdAt: data.createdAt
+        ? moment(data.createdAt.toDate()).format("YYYY-MM-DD HH:mm:ss")
+        : null,
       isEdit: false,
       tempComment: "",
       likeId: "",
